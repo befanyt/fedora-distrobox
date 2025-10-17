@@ -6,7 +6,12 @@
 
   "packageRules": [
     {
-      "matchUpdateTypes": ["pin", "pinDigest", "digest"],
+      "automerge": true,
+      "matchUpdateTypes": ["pin", "pinDigest"]
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["digest"],
       "automerge": true
     }
   ]
