@@ -35,17 +35,17 @@ jobs:
       packages: write
       id-token: write
     container:
-      image: quay.io/travier/podman-action
+      image: quay.io/travier/podman-action@sha256:2a20c1f08705598cfaa6b1a044281d9a3161e82dd14167c5fe6de4730c9a9bc8
       options: "--security-opt=label=disable --privileged --user 0:0 --device=/dev/kvm --device=/dev/fuse --volume /:/run/host:rw"
     steps:
       - name: Fixup GitHub homedir
         run: mkdir -p /github/home/.docker/
 
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
       - name: Build container image
-        uses: redhat-actions/buildah-build@v2
+        uses: redhat-actions/buildah-build@7a95fa7ee0f02d552a32753e7414641a04307056 # v2
         with:
           image: ${{ env.NAME }}
           tags: latest
@@ -54,7 +54,7 @@ jobs:
           oci: true
 
       - name: Push to Container Registry
-        uses: redhat-actions/push-to-registry@v2
+        uses: redhat-actions/push-to-registry@5ed88d269cf581ea9ef6dd6806d01562096bee9c # v2
         id: push
         if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
         with:
@@ -68,7 +68,7 @@ jobs:
             --compression-level=19
 
       - name: Login to Container Registry
-        uses: redhat-actions/podman-login@v1
+        uses: redhat-actions/podman-login@4934294ad0449894bcd1e9f191899d7292469603 # v1
         if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
         with:
           registry: ${{ env.REGISTRY }}
