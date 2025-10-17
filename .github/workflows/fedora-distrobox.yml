@@ -1,0 +1,67 @@
+name: "Build fedora-distrobox"
+
+env:
+    NAME: fedora-distrobox
+    REGISTRY: ghcr.io/${{ github.repository_owner }}
+    REGISTRY_USER: ${{ github.actor }}
+    REGISTRY_PASSWORD: ${{ github.token }}
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'Containerfile'
+      - '.github/workflows/fedora-distrobox.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'Containerfile'
+      - '.github/workflows/fedora-distrobox.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build-push-image:
+    runs-on: ubuntu-24.04
+    container:
+      image: quay.io/travier/podman-action
+      options: "--security-opt=label=disable --privileged --user 0:0 --device=/dev/kvm --device=/dev/fuse --volume /:/run/host:rw"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+
+      - name: Build container image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          context: ${{ env.NAME }}
+          image: ${{ env.NAME }}
+          tags: latest
+          containerfiles: Containerfile
+          layers: false
+          oci: true
+
+      - name: Push to Container Registry
+        uses: redhat-actions/push-to-registry@v2
+        id: push
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+        with:
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          image: ${{ env.NAME }}
+          registry: ${{ env.REGISTRY }}
+          tags: latest
+          extra-args: |
+            --compression-format=zstd:chunked
+            --compression-level=19
+
+      - name: Login to Container Registry
+        uses: redhat-actions/podman-login@v1
+        if: (github.event_name == 'push' || github.event_name == 'schedule') && github.ref == 'refs/heads/main'
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
