@@ -38,6 +38,9 @@ jobs:
       image: quay.io/travier/podman-action
       options: "--security-opt=label=disable --privileged --user 0:0 --device=/dev/kvm --device=/dev/fuse --volume /:/run/host:rw"
     steps:
+      - name: Fixup GitHub homedir
+        run: mkdir -p /github/home/.docker/
+
       - name: Checkout repo
         uses: actions/checkout@v5
 
