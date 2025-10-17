@@ -6,13 +6,9 @@
 
   "packageRules": [
     {
-      "automerge": true,
-      "matchUpdateTypes": ["pin", "pinDigest"]
-    },
-    {
-      "matchDatasources": ["docker"],
       "matchUpdateTypes": ["digest"],
-      "automerge": true
+      "automerge": true,
+      "matchDepNames" : ["quay.io/fedora/fedora-toolbox"]
     }
   ]
 }
