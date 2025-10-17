@@ -7,8 +7,7 @@
   "packageRules": [
     {
       "matchUpdateTypes": ["digest"],
-      "automerge": true,
-      "matchDepNames" : ["quay.io/fedora/fedora-toolbox"]
+      "automerge": true
     }
   ]
 }
