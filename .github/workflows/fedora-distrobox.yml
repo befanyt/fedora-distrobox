@@ -30,6 +30,10 @@ concurrency:
 jobs:
   build-push-image:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
     container:
       image: quay.io/travier/podman-action
       options: "--security-opt=label=disable --privileged --user 0:0 --device=/dev/kvm --device=/dev/fuse --volume /:/run/host:rw"
