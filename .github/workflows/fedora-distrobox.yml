@@ -19,6 +19,9 @@ on:
     paths:
       - 'Containerfile'
       - '.github/workflows/fedora-distrobox.yml'
+  workflow_dispatch:
+
+permissions: read-all
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
