@@ -13,5 +13,4 @@ dnf -y install --setopt=install_weak_deps=False \
     just \
     btop
 
-dnf clean all
 EORUN
