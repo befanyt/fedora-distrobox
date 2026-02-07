@@ -1,4 +1,4 @@
-FROM quay.io/fedora/fedora-toolbox:43@sha256:7b57f71aef25cfa4e494b9fbe41708ebccd033f4df887b71b70ae2635151b316
+FROM quay.io/fedora/fedora-toolbox:45@sha256:9163bc2c83cbbe6dbb012e04cf05b85f316fec4ecf7681a74c4bd8c05d620487
 
 RUN <<EORUN
 set -euxo pipefail
