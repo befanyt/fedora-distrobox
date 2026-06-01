@@ -35,7 +35,7 @@ jobs:
       packages: write
       id-token: write
     container:
-      image: quay.io/travier/podman-action@sha256:9fb112d6f9ce271413a6359d06da77f5249d56e1ab81e01ecbe7f0bdfc88e1a5
+      image: quay.io/travier/podman-action@sha256:dec2efc0a1be93d741fc25fe4cf6bb904e552ab1cd8dd4321b65e3f0fdf8e910
       options: "--security-opt=label=disable --privileged --user 0:0 --device=/dev/kvm --device=/dev/fuse --volume /:/run/host:rw"
     steps:
       - name: Fixup GitHub homedir
